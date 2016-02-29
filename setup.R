@@ -7,8 +7,8 @@ library(rnbn)
 if(file.exists('NBN_Details.R')){
   source("NBN_Details.R")
 }else{
-  writeLines("NBN_Details.R doesn't exist. Do you want to create it?")
-  create <- readline("Create file (y/n)? ")
+
+  create <- readline("NBN_Details.R doesn't exist. Do you want to create it?\nCreate file (y/n)? ")
   retry <- tolower(create) == "y"
   while(retry){
     user <- readline("NBN username: ")
@@ -24,7 +24,6 @@ if(file.exists('NBN_Details.R')){
         FALSE
       },
       error = function(e){
-        browser()
         choice<- readline("Login failed. Try again (y/n)? ")
         tolower(choice) == 'y'
       }
