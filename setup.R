@@ -10,6 +10,11 @@ if(file.exists('NBN_Details.R')){
 
   create <- readline("NBN_Details.R doesn't exist. Do you want to create it?\nCreate file (y/n)? ")
   retry <- tolower(create) == "y"
+  if(!retry){
+    writeLines("You'll need to call nbnLogin() yourself before you do anything else\n")
+    writeLines("Please be careful to keep your account details out of your repository!\n")
+  }
+  
   while(retry){
     user <- readline("NBN username: ")
     password <- readline("NBN password: ")
@@ -26,6 +31,9 @@ if(file.exists('NBN_Details.R')){
       error = function(e){
         choice<- readline("Login failed. Try again (y/n)? ")
         tolower(choice) == 'y'
+      },
+      finally=function(){
+        sink()
       }
     )
     
