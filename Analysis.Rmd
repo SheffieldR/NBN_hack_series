@@ -1,0 +1,58 @@
+---
+title: "My Cool NBN Analysis"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r login, include=F}
+stopifnot(file.exists("NBN_Details.R"))
+# Load our NBN login info and get ready to query NBN
+library(rnbn)
+library(ggmap)
+source("NBN_Details.R")
+nbnLogin(NBN_USER,NBN_PASSWORD)
+```
+## Find some Grass Snakes in Sheffield!
+
+To get incidences of the species, we need to get its Taxon Version Key, a unique name that unambiguously identifies the species. We can use `getTVKQuery` to relate a name to the species' TVK.
+
+```{r}
+snake <- getTVKQuery("grass snake", top=TRUE)
+snake
+snakeTVK <- snake$ptaxonVersionKey
+```
+
+This looks like the right one. There are `snake$gatewayRecordCount` records for the species; enough for us to explore the data further.
+
+## Getting Observations
+
+We can ask the NBN gateway for occurrences of our TVK that appear in all the data sets it indexes. These records are provided by several organisations who have been kind enough to make them available to users of the NBN gateway.
+
+Records from `getTVKQuery` contain more than just the TVK, so we need to extract the TVK from the result; the `ptaxonVersionKey` column of the data frame is the one we need.
+
+```{r}
+occurrences <- getOccurrences(snake$ptaxonVersionKey, gridRef='SK38')
+head(occurrences)
+```
+
+## Plotting Data
+
+In addition to the metadata for the recording `rnbn` will estimate a latitude and longitude for each record. These are estimates, as NBN records are provided at a low spatial resolution (100m to 10km). Each record includes a `resolution` attribute that indicates how precise the location is.
+
+```{r}
+plot(occurrences$longitude,occurrences$latitude)
+```
+
+
+## Using `ggmap` to make a prettier map
+
+We can use the `ggmap` package to easily overlay points over a map of the region. If you're already familiar with `ggplot2`, you'll recognise the similarities in `ggmap`. To do this, we first need to get a map of the location. Once we have the map, we can just add a `geom_point` with our data.
+
+```{r}
+location <- with(occurrences, c(mean(longitude), mean(latitude)))
+map <- get_map(location, zoom=12, source="google")
+ggmap(map) + geom_point(data=occurrences, aes(longitude,latitude))
+```

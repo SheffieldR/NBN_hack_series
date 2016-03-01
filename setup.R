@@ -2,6 +2,12 @@
 if(!library('rnbn', logical.return=TRUE)){ 
   install.packages("rnbn") 
 }
+
+# These are super-useful:
+install.packages("ggplot2")
+install.packages("ggmap")
+install.packages("dplyr")
+
 library(rnbn)
 
 if(file.exists('NBN_Details.R')){
