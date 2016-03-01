@@ -6,6 +6,8 @@ Hackpad link: [bit.ly/Sheffield_R_NBN_hackpad](https://docs.google.com/document/
 
 # Getting Started:
 
+**Don't forget to make a fork of this project on GitHub first!**
+
 Clone the project using RStudio and run the `setup.R` file. This will save your NBN credentials in the `NBN_Details.R` file (this is automatically ignored by Git to keep them private).
 
 Run the Analysis.Rmd file in RStudio. This includes a basic analysis already to get you started.
