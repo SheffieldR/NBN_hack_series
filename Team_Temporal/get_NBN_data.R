@@ -74,6 +74,3 @@ save(shef_data, file = 'Team_Temporal/shef_data.rdata')
 
 # Close the cluster
 sfStop()
-
-
-

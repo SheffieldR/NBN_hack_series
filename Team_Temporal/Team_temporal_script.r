@@ -93,7 +93,11 @@ telfer_results <- telfer(taxa = telferData_sub$name,
 # Biological Conservation, 107, 99-109
 
 # Lets have a look in decending order
-telfer_results[order(telfer_results$Telfer_1_2, decreasing = TRUE), ]
+sorted_results <- telfer_results[order(telfer_results$Telfer_1_2, decreasing = TRUE), ]
+sorted_results
+
+# Let's save this as a csv
+write.csv(sorted_results, file = 'Team_Temporal/Telfer_results.csv')
 
 # we need to read the paper and work out what these values mean
 # is -1 a big decline or a small decline?
