@@ -32,6 +32,9 @@ multi_hectad <- function(x){
   # (we will also create a .rdata copy for faster loading)
   write.table(x = occ, file = 'shef_table.csv', sep = ',', append = TRUE, col.names = TRUE)
   
+  # write out data about data contributors
+  write.table(x = attr(occ, which = 'providers'), file = 'shef_providers.csv', sep = ',', append = TRUE, col.names = TRUE)
+  
   return(occ)
   
 }

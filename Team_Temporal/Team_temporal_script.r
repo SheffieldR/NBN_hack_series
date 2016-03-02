@@ -97,3 +97,10 @@ telfer_results[order(telfer_results$Telfer_1_2, decreasing = TRUE), ]
 
 # we need to read the paper and work out what these values mean
 # is -1 a big decline or a small decline?
+
+#### IMPORTANT ####
+# When we come to presenting to the results we need to acknowledge all of the
+# organisations that have contributed data. To do this look at the csv output
+# from the script that gets data shef_providers.csv. Note there might be duplicates
+# here as providers will be written once per hectad. read in and then use unique() 
+# on the dataframe to get rif of the duplicates
