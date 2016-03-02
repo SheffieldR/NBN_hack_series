@@ -85,3 +85,15 @@ save(shef_data, file = 'Team_Temporal/shef_data.rdata')
 
 # Close the cluster
 sfStop()
+
+# Have a look at the data
+years <- as.numeric(format(shef_data$startDate, '%Y'))
+summary(years)
+
+# some of these are clearly wrong
+hist(years[years < 2020 & years > 1900], breaks = 100)
+
+# How many providers?
+providers <- unique(read.csv('Team_Temporal/shef_providers.csv'))
+
+sort(as.character(unique(providers$name)))

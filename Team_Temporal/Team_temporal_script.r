@@ -15,7 +15,7 @@ shef_data_1k_or_better$oneK <- sparta:::reformat_gr(shef_data_1k_or_better$locat
 # check these are sensible
 unique(shef_data_1k_or_better$oneK)
 
-# how many species? 2177
+# how many species? 9559
 unique(shef_data_1k_or_better$pTaxonName)
 
 # Which species have more that 1000 records?
@@ -59,22 +59,19 @@ years <- as.numeric(format(telferData_sub$startDate, "%Y"))
 # Plot this
 hist(years)
 
-### errrr why dont we have data before 2005?
-# damn the original script to get data is set to only get data between 2005-10
-# My bad, I am going to modify this script to get all of the public data then
-# we shuld have a bit more to play with. I'll add all this to the Git Repo
-
-# Going ahead with the data we have for now
 # Here is the help for the function we want to use
 ?telfer
 
 # we need to create a time period column
 ?date2timeperiod
 
+# There are some NAs in the data we need to remove
+telferData_sub <- na.omit(telferData_sub)
+
 # Use different years when we have all the data
 TP <- date2timeperiod(Date = telferData_sub[,1:2],
-                      time_periods = data.frame(start = c(2005, 2009),
-                                                end = c(2008, 2010)))
+                      time_periods = data.frame(start = c(1800, 2000),
+                                                end = c(1999, 2016)))
 
 # Make sure these numbers are sort of balanced
 table(TP)
@@ -101,6 +98,7 @@ write.csv(sorted_results, file = 'Team_Temporal/Telfer_results.csv')
 
 # we need to read the paper and work out what these values mean
 # is -1 a big decline or a small decline?
+# also some of the results look a little fishy, worth digging a bit
 
 #### IMPORTANT ####
 # When we come to presenting to the results we need to acknowledge all of the
