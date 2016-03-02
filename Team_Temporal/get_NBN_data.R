@@ -1,16 +1,18 @@
 # This script will get all the public
 # data for the hectad listed in the csv.
 
-# This csv has the hectads of south west yorkshire
-# I got it from the biological records centre's website
+# This csv has the all the hectads in a 7x7 10km grid centered on Sheffield.
+# This entire grid is therefore 70km x 70km.
+# you could alternativly use the south west yorkshire squares but Sheffield
+# is right at the south of the county
 
 rm(list = ls())
 library(rnbn)
 
 # Which hectads are around Sheffield 
-shef_hec_tab <- read.csv('Team_Temporal/south-west-yorkshire-10km-squares.csv',
+shef_hec_tab <- read.csv('Team_Temporal/shef_city_hectads.csv',
                          stringsAsFactors = FALSE)
-shef_hec <- shef_hec_tab$Square
+shef_hec <- shef_hec_tab$x
 shef_hec
 
 # Function for doing data retrieval
@@ -25,20 +27,29 @@ multi_hectad <- function(x){
   
   # login
   nbnLogin(username = login_details$un,
-           password = login_details$pwd)
+           password = login_details$pwd,
+           verbose =  TRUE)
   
   # get data
   occ <- getOccurrences(gridRef = x)
   
   # write out a csv copy
   # (we will also create a .rdata copy for faster loading)
+  colnd <- ifelse(file.exists('Team_Temporal/shef_table.csv'), FALSE, TRUE)
   write.table(x = occ, file = 'Team_Temporal/shef_table.csv',
-              sep = ',', append = TRUE, col.names = TRUE)
+              sep = ',', append = TRUE, col.names = colnd,
+              row.names = FALSE)
   
   # write out data about data contributors
+  colnp <- ifelse(test = file.exists('Team_Temporal/shef_providers.csv'), FALSE, TRUE)
   write.table(x = attr(occ, which = 'providers'),
               file = 'Team_Temporal/shef_providers.csv',
-              sep = ',', append = TRUE, col.names = TRUE)
+              sep = ',', append = TRUE, col.names = colnp,
+              row.names = FALSE)
+  
+  # log progress
+  write.table(x = x, file = 'Team_Temporal/log.txt',
+              sep = ',', append = TRUE, col.names = FALSE)
   
   return(occ)
   
@@ -52,7 +63,7 @@ library(snowfall)
 
 # Start our (very mini) cluster (I need a new laptop)
 # This uses all your cores (prepare for your computer to go slooooow)
-sfInit(parallel = TRUE, type = 'SOCK', cpus = detectCores())
+sfInit(parallel = TRUE, type = 'SOCK', cpus = detectCores() - 1)
 
 # Send all our parameters and our function to the cluster
 sfExportAll()
