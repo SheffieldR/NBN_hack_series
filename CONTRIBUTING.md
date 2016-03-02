@@ -14,3 +14,15 @@ So keep an eye on the [**hackpad**](https://docs.google.com/document/d/19ctbFk6Y
 
 Hope to hear from as many of you as possible!
 
+### Hack series timetable:
+
+
+| Session                  | Date                | Time          |
+|--------------------------|---------------------|---------------|
+| Kickoff Event*           | Tuesday 23 February | 17:30         |
+| Session 1                | Tuesday 1 March     | 16:30 onwards |
+| Session 2                | Tuesday 8 March     | 16:30 onwards |
+| Final Session & Feedback | Tuesday 15 March    | 16:30 onwards |
+
+
+Have a look at repo [README](https://github.com/SheffieldR/NBN_hack_series/blob/master/README.md) for further details
