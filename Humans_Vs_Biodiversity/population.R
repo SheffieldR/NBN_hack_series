@@ -6,4 +6,8 @@ population.data <- read.csv("MYEB3_summary_components_of_change_series_UK_(0214)
   melt(id.vars = 1:3) %>%
   extract(variable, into=c("measurement","year"), regex="(.*)_(\\d{4})")
 #  mutate(year = )
-  
+
+sheffield.population <- population.data %>% 
+  filter(lad2014_name == "Sheffield") %>%
+  filter(measurement  == "population") %>%
+  select(year, population=value)
