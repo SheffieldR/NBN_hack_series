@@ -12,5 +12,6 @@ sheffield.population <- function(){
   population.data %>% 
     filter(lad2014_name == "Sheffield") %>%
     filter(measurement  == "population") %>%
+    transform(year = as.numeric(year)) %>%
     select(year, population=value)
 }

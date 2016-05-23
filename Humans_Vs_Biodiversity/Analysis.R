@@ -38,3 +38,9 @@ dipshef2 %>%
   group_by(year) %>% 
   summarise(count=length(unique(pTaxonVersionKey))) %>%
   left_join(pop.history) %>% ggplot(aes(population, count)) + geom_point() + geom_smooth(method="lm") + geom_text(aes(label=year))
+
+dipshef2 %>%
+  filter(pTaxonVersionKey == 'NHMSYS0000530307') %>%
+  group_by(year) %>%
+  summarise(count=n()) %>%
+  ggplot(aes(year, count)) + geom_point()

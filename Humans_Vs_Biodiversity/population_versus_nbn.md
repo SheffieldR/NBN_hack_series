@@ -1,0 +1,80 @@
+Team Humans vs Biodiversity
+========================================================
+author: 
+date: 
+autosize: true
+
+Overview
+========================================================
+
+Our team wanted to see what impact humans have had on Sheffield's biodiversity.
+
+We struggled:
+
+ * How do you measure biodiversity?
+ * How do you measure human impact?
+
+Human Population in Sheffield (ONS Annual Estimate)
+========================================================
+
+
+```r
+source("population.R")
+library(ggplot2)
+library(dplyr)
+pop.history <- sheffield.population()
+pop.history %>% ggplot(aes(year, population)) + geom_line()
+```
+
+![plot of chunk unnamed-chunk-1](population_versus_nbn-figure/unnamed-chunk-1-1.png) 
+
+Sheffield Observations Data Cleaning
+=======================
+
+```r
+library(rnbn)
+source("../NBN_Details.R")
+#nbnLogin(NBN_USER,NBN_PASSWORD)
+
+#dipshef <- getOccurrences(gridRef = 'SK38', silent = TRUE, acceptTandC = TRUE, startYear = 2000)
+load("dipshef.Rdata")
+#this seperates the startDate column into seperate columns for years, months and days so that we 
+# can just make a year on year map
+dipshef2 <- separate(dipshef, startDate, c("year", "m", "d"))
+dipshef2 <- dipshef2 %>% transform(year = as.numeric(year))
+```
+
+How does Population change with Species?
+===========================================
+
+
+```r
+dipshef2 %>% 
+  filter(year >= min(pop.history$year)) %>% 
+  group_by(year) %>% 
+  summarise(count=length(unique(pTaxonVersionKey))) %>%
+  left_join(pop.history) %>% ggplot(aes(population, count)) + geom_point() + geom_smooth(method="lm") + geom_text(aes(label=year))
+```
+
+![plot of chunk unnamed-chunk-3](population_versus_nbn-figure/unnamed-chunk-3-1.png) 
+
+Pigeons as a Person Proxy??
+==========================================
+
+```r
+dipshef2 %>%
+  filter(pTaxonVersionKey == 'NHMSYS0000530307') %>%
+  group_by(year) %>%
+  summarise(count=n()) %>%
+  ggplot(aes(year, count)) + geom_point()
+```
+
+![plot of chunk unnamed-chunk-4](population_versus_nbn-figure/unnamed-chunk-4-1.png) 
+
+Challenges
+================================================
+
+* Limited amount of data!
+* No data for common species to compare biodiversity (10 pigeons in a year!)
+* Lack of absence makes inference more challenging
+* Lack of precision makes it tough to compare local changes
